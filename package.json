@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-easy-swipe": "0.0.17",
     "react-scripts": "2.1.5",
     "react-ui": "^0.6.2",
     "semantic-ui-react": "^0.85.0"
