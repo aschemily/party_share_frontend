@@ -3,66 +3,32 @@ import logo from './logo.svg';
 import './App.css';
 import TopicContainer from './container/TopicContainer'
 import Favorites from './container/Favorites'
+import LandingPage from './container/LandingPage'
+import NavBar from './container/NavBar'
+import UserProfile from './container/UserProfile'
+import LoginPage from './components/LoginPage'
+import SignUp from './components/SignUp'
+import { BrowserRouter as Router, Route, NavLink,Switch } from 'react-router-dom';
 
 
 class App extends Component {
-  state = {
-    topics: [],
-    topicClicked: false,
-    displayOne: '',
-    favorites:[],
-    favoriteIndex: 0,
-  }
-
-  componentDidMount(){
-    fetch("http://localhost:3000/api/v1/topics")
-    .then(r => r.json())
-    .then(data => this.setState({topics: data}))
-  }
-
-  clickTopic = (topicName) =>{
-    //console.log('in clickTopic event',topicName)
-   return this.state.topics.map(topic =>{
-     //console.log(topicFavorites)
-      //console.log('in clickTopic topic is',topic.favorites)
-      if (topicName === topic.topic_name){
-        this.setState({favorites: topic.favorites, topicClicked:true})
-      } else {
-        return topicName
-      }
-      //console.log('topicFavorites', topicFavorites)
-    })
-  }
-
-  handleNextFavorite = ()=>{
-    this.setState({favoriteIndex: this.state.favoriteIndex + 1})
-  }
-
-  favoriteToDisplay = () =>{
-    return this.state.favorites.slice(
-      this.state.favoriteIndex, this.state.favoriteIndex + 1
-    )
-  }
-
-  onSwipeMove = (position, event)=>{
-    console.log('position', position.x, 'event', event)
-    console.log('position', position.y, 'event', event)
-  }
-
-
-
 
   render() {
-    console.log('in state topics',this.state.topics)
-    console.log('in state favorites',this.state.favorites)
+    // console.log('in state topics',this.state.topics)
+    // console.log('in state favorites',this.state.favorites)
     return (
       <div>
       <h1>In APP</h1>
-      {this.state.topicClicked ?
-       <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} onSwipe={this.onSwipeMove}/>
-      : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>
+      <Router>
+      <React.Fragment>
+      <Route exact path="/" component={LandingPage}/>
+      <Route exact path="/login" component={LoginPage}/>
+      <Route exact path="/signup" component={SignUp}/>
+      <Route exact path="/userprofile" component={UserProfile}/>
+      <Route exact path="/topics" component={()=>this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} onSwipe={this.onSwipeMove}/> : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
 
-        }
+       </React.Fragment>
+       </Router>
       </div>
     );
   }
