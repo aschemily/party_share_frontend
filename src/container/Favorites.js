@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Topic from '../components/Topic'
 import Swipe from 'react-easy-swipe';
-import { Button, Popup, Header, Grid, Dropdown } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Dropdown, Card } from 'semantic-ui-react'
 import uuid from 'uuid'
 
 class Favorites extends Component {
@@ -11,42 +11,55 @@ class Favorites extends Component {
     // console.log('favorite state',this.state)
    console.log('in Favorites props are',this.props)
     return(
+      <div className="card">
 
-      <div>
-      <h1>In Favorites</h1>
+      <div id="favorite-card">
+      <Card.Group centered >
+        <Card.Header>
       {this.props.favorites.map(favorite=>{
         return <h1 key={uuid()}> {favorite.title}</h1>
       })}
+      </Card.Header>
 
-      <button onClick={()=>this.props.handleNextFavorite()}>Dislike </button>
-      <button onClick={()=>this.props.handleNextFavorite()}>like </button>
+      </Card.Group>
+       </div>
+
+
+    <div id="buttons">
+
+        <Button basic color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
+        <Button basic color="green" onClick={()=>this.props.handleNextFavorite()}>like </Button>
+
 
       <Popup trigger={<Button>Send To</Button>} flowing hoverable>
-      <Grid centered divided columns={3}>
 
-      <Grid.Column textAlign='center'>
-      <Header as='h4'>User 1</Header>
-      <Button> Send </Button>
-      </Grid.Column>
 
-      <Grid.Column textAlign='center'>
-      <Header as='h4'>Group 1</Header>
-      <Button> Send </Button>
-      </Grid.Column>
+        <Grid.Column textAlign='center'>
+        <Header as='h4'>User 1</Header>
+        <Button> Send </Button>
+        </Grid.Column>
 
-      <Grid.Column textAlign='center'>
-      <Header as='h4'>User 2</Header>
-      <Button> Send </Button>
-      </Grid.Column>
+        <Grid.Column textAlign='center'>
+        <Header as='h4'>Group 1</Header>
+        <Button> Send </Button>
+        </Grid.Column>
 
-      <Grid.Column textAlign='center'>
-      <Header as='h4'>Group 2</Header>
-      <Button> Send </Button>
-      </Grid.Column>
+        <Grid.Column textAlign='center'>
+        <Header as='h4'>User 2</Header>
+        <Button> Send </Button>
+        </Grid.Column>
 
-      </Grid>
+        <Grid.Column textAlign='center'>
+        <Header as='h4'>Group 2</Header>
+        <Button> Send </Button>
+        </Grid.Column>
+
+
+
       </Popup>
-      </div>
+
+     </div>
+    </div>
 
     )
   }
@@ -54,5 +67,6 @@ class Favorites extends Component {
 
 
 }
+
 
 export default Favorites

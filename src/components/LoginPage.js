@@ -63,8 +63,23 @@ class LoginPage extends Component {
 
 }
 
-function mapDispatchToProps(dispatch){
-  console.log(dispatch)
-}
+// return {
+//   loggedInUser: (state)=>{
+//     dispatch(createAction(state.actionType))
+//   }
+// }
 
-export default withRouter(connect(null, mapDispatchToProps)(LoginPage));
+
+//{type:"LOG_IN_SUCCESS", payload: user}
+// function mapDispatchToProps(dispatch, ownProps){
+//   console.log('in mapDispatchToProps dispatch is',dispatch)
+//
+//   return {
+//     login: (username, password) => {
+//       dispatch({type: "LOGIN", payload: user})
+//     }
+//   }
+// }
+
+//export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));
+export default LoginPage 

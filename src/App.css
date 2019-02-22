@@ -23,6 +23,26 @@
   color: #61dafb;
 }
 
+#favorite-card{
+   /* justify-content: center;
+  */
+  box-sizing: content-box;
+  display: inline-block;
+  position: relative;
+  border: 5px solid black;
+  margin: 20px;
+  padding:140px;
+  left:33%;
+  /* right:50%; */
+
+}
+
+#buttons{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

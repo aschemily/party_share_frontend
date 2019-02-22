@@ -68,8 +68,12 @@ class UserProfile extends Component {
       </div>
     )
   }
-
-
 }
 
-export default connect()(UserProfile)
+// function mapStateToProps(state){
+//   console.log('in userprofile mapStateToProps state',state)
+//
+// }
+
+//export default connect(mapStateToProps)(UserProfile)
+export default UserProfile
