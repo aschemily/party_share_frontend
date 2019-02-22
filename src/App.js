@@ -8,10 +8,11 @@ import NavBar from './container/NavBar'
 import UserProfile from './container/UserProfile'
 import LoginPage from './components/LoginPage'
 import SignUp from './components/SignUp'
-import { BrowserRouter as Router, Route, NavLink,Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink,Switch, withRouter } from 'react-router-dom';
 
 
 class App extends Component {
+
 
   render() {
     // console.log('in state topics',this.state.topics)
@@ -34,4 +35,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

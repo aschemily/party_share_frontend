@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
+import {signUp} from '../helpers/actions'
 
 class SignUp extends Component {
 
@@ -9,7 +10,7 @@ class SignUp extends Component {
     username: '',
     email: '',
     password:'',
-    submitted:false
+    confirmation:'',
   }
 
   inputChange = (event) =>{
@@ -23,24 +24,15 @@ class SignUp extends Component {
     event.preventDefault()
     //this.setState({submitted: true})
     //
-    fetch("http://localhost:3000/api/v1/users",{
-      method:'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        email: this.state.email,
-        password:this.state.password
-      })
-    })
-    .then(r => r.json())
-    .then(data => console.log('new data',data))
-    this.props.history.push('/userprofile')
-
+    if (this.state.password === this.state.confirmation){
+      this.props.signUp(this.state.username, this.state.email, this.state.password, this.props.history)
+    } else{
+      alert("Passwords do not match!")
+    }
   }
 
   render(){
+    console.log('sign up props',this.props)
     //console.log('in SignUp props are',props)
     return(
       <div className='login-form'>
@@ -51,15 +43,26 @@ class SignUp extends Component {
           </Header>
           <Form size='large' onSubmit={this.handleSubmit}>
             <Segment stacked>
-              <Form.Input name="username" onChange={this.inputChange}fluid icon='user' iconPosition='left' placeholder='Username' />
-              <Form.Input name="email"onChange={this.inputChange} fluid icon='user' iconPosition='left' placeholder='E-mail address' />
+              <Form.Input name="username" value={this.state.username} onChange={this.inputChange}fluid icon='user' iconPosition='left' placeholder='Username' />
+              <Form.Input name="email" value={this.state.email} onChange={this.inputChange} fluid icon='user' iconPosition='left' placeholder='E-mail address' />
               <Form.Input
                 onChange={this.inputChange}
+                value={this.state.password}
                 name="password"
                 fluid
                 icon='lock'
                 iconPosition='left'
                 placeholder='Password'
+                type='password'
+              />
+              <Form.Input
+                onChange={this.inputChange}
+                value={this.state.confirmation}
+                name="password"
+                fluid
+                icon='lock'
+                iconPosition='left'
+                placeholder='Password Confirmation'
                 type='password'
               />
 
@@ -80,4 +83,4 @@ class SignUp extends Component {
 
 }
 
-export default SignUp
+export default connect(null, )(SignUp)

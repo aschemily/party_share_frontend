@@ -19,10 +19,17 @@ class UserProfile extends Component {
   }
 
   componentDidMount(){
+    if(!this.props.currentUser){
+      this.props.history.push("/login")
+    }
+  }
+
+  componentDidMount(){
     fetch("http://localhost:3000/api/v1/topics")
     .then(r => r.json())
     .then(data => this.setState({topics: data}))
   }
+
 
   clickTopic = (topicName) =>{
     //console.log('in clickTopic event',topicName)
@@ -70,10 +77,14 @@ class UserProfile extends Component {
   }
 }
 
-// function mapStateToProps(state){
-//   console.log('in userprofile mapStateToProps state',state)
-//
-// }
+function mapStateToProps(state){
+  console.log('in userprofile mapStateToProps state',state)
+  return{
+    currentUser: state.currentUser,
+    loggedIn: state.loggedIn
+  }
+
+}
 
 //export default connect(mapStateToProps)(UserProfile)
-export default UserProfile
+export default connect(mapStateToProps)(UserProfile)

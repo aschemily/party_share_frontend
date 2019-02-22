@@ -27,8 +27,8 @@ class Favorites extends Component {
 
     <div id="buttons">
 
-        <Button basic color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
-        <Button basic color="green" onClick={()=>this.props.handleNextFavorite()}>like </Button>
+        <Button id="btn-like" basic color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
+        <Button id="btn-dislike" basic color="green" onClick={()=>this.props.handleNextFavorite()}>like </Button>
 
 
       <Popup trigger={<Button>Send To</Button>} flowing hoverable>
