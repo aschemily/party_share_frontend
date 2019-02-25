@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import Topic from '../components/Topic'
-import Swipe from 'react-easy-swipe';
 import { Button, Popup, Header, Grid, Dropdown, Card } from 'semantic-ui-react'
 import uuid from 'uuid'
+// import Cards, { Card } from 'react-swipe-card'
 
 class Favorites extends Component {
     //<Dropdown placeholder='SEND TO' fluid multiple search selection options={this.props.favorites}/>
@@ -14,14 +14,17 @@ class Favorites extends Component {
       <div className="card">
 
       <div id="favorite-card">
-      <Card.Group centered >
-        <Card.Header>
-      {this.props.favorites.map(favorite=>{
-        return <h1 key={uuid()}> {favorite.title}</h1>
-      })}
-      </Card.Header>
 
-      </Card.Group>
+          <Card.Group centered >
+            <Card.Header>
+              {this.props.favorites.map(favorite=>{
+
+                return <h1 key={uuid()}> {favorite.title}</h1>
+
+              })}
+            </Card.Header>
+          </Card.Group>
+    
        </div>
 
 

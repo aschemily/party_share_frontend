@@ -9,7 +9,6 @@ class LoginPage extends Component {
     username: '',
     email: '',
     password:'',
-    submitted:false
   }
 
   inputChange = (event) =>{
@@ -19,10 +18,9 @@ class LoginPage extends Component {
     this.setState({[name]: value})
   }
 
-  handleSubmit = (event)=>{
-    event.preventDefault()
+  handleSubmit = ()=>{
     //this.setState({submitted: true})
-    this.props.history.push('/userprofile')
+    this.props.login(this.state.username, this.state.email, this.state.password)
 
   }
 
@@ -33,7 +31,7 @@ class LoginPage extends Component {
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src='/logo.png' /> Log-in to your account
+          Log-in to your account
           </Header>
           <Form size='large' onSubmit={this.handleSubmit}>
             <Segment stacked>
@@ -63,23 +61,4 @@ class LoginPage extends Component {
 
 }
 
-// return {
-//   loggedInUser: (state)=>{
-//     dispatch(createAction(state.actionType))
-//   }
-// }
-
-
-//{type:"LOG_IN_SUCCESS", payload: user}
-// function mapDispatchToProps(dispatch, ownProps){
-//   console.log('in mapDispatchToProps dispatch is',dispatch)
-//
-//   return {
-//     login: (username, password) => {
-//       dispatch({type: "LOGIN", payload: user})
-//     }
-//   }
-// }
-
-//export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));
-export default LoginPage 
+export default LoginPage

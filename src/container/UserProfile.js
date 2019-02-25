@@ -9,6 +9,7 @@ import LandingPage from './LandingPage'
 import { connect } from 'react-redux'
 
 
+
 class UserProfile extends Component {
   state = {
     topics: [],
@@ -18,18 +19,12 @@ class UserProfile extends Component {
     favoriteIndex: 0,
   }
 
-  componentDidMount(){
-    if(!this.props.currentUser){
-      this.props.history.push("/login")
-    }
-  }
 
   componentDidMount(){
     fetch("http://localhost:3000/api/v1/topics")
     .then(r => r.json())
-    .then(data => this.setState({topics: data}))
+    .then(data => this.setState({topics: data},()=>console.log('topics state',this.state)))
   }
-
 
   clickTopic = (topicName) =>{
     //console.log('in clickTopic event',topicName)
@@ -55,16 +50,19 @@ class UserProfile extends Component {
     )
   }
 
+
+
   render(){
     console.log('do i have props',this.props)
+    console.log('user profile state',this.state)
     return(
       <div>
       <h1> coming from user profile </h1>
       <Router>
       <React.Fragment>
-      <NavBar/>
+      <NavBar logOut={this.props.logOut}/>
+
       <Route exact path="/" component={LandingPage}/>
-      <Route exact path="/login" component={LoginPage}/>
 
       <Route exact path="/topics" component={()=>this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} onSwipe={this.onSwipeMove}/> : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
 
@@ -77,14 +75,7 @@ class UserProfile extends Component {
   }
 }
 
-function mapStateToProps(state){
-  console.log('in userprofile mapStateToProps state',state)
-  return{
-    currentUser: state.currentUser,
-    loggedIn: state.loggedIn
-  }
 
-}
 
-//export default connect(mapStateToProps)(UserProfile)
-export default connect(mapStateToProps)(UserProfile)
+
+export default UserProfile

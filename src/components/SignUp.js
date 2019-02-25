@@ -1,45 +1,36 @@
 import React, {Component} from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 import { withRouter } from 'react-router'
-import { connect } from 'react-redux'
-import {signUp} from '../helpers/actions'
+
+
 
 class SignUp extends Component {
+state={
+  username: '',
+  email: '',
+  password:'',
+  confirmation:'',
+}
 
-  state = {
-    username: '',
-    email: '',
-    password:'',
-    confirmation:'',
-  }
 
   inputChange = (event) =>{
-  //  console.log('inputting change',event.target.name)
-   //  console.log('inputting change',event.target.value)
   const {name, value} = event.target
     this.setState({[name]: value})
   }
 
-  handleSubmit = (event)=>{
-    event.preventDefault()
-    //this.setState({submitted: true})
-    //
-    if (this.state.password === this.state.confirmation){
-      this.props.signUp(this.state.username, this.state.email, this.state.password, this.props.history)
-    } else{
-      alert("Passwords do not match!")
-    }
+  handleSubmit= () =>{
+    this.props.signup(this.state.username, this.state.email, this.state.password, this.state.confirmation)
   }
 
   render(){
-    console.log('sign up props',this.props)
+    //console.log('sign up props',this.props)
     //console.log('in SignUp props are',props)
     return(
       <div className='login-form'>
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src='/logo.png' /> Sign Up
+            Sign Up
           </Header>
           <Form size='large' onSubmit={this.handleSubmit}>
             <Segment stacked>
@@ -58,7 +49,7 @@ class SignUp extends Component {
               <Form.Input
                 onChange={this.inputChange}
                 value={this.state.confirmation}
-                name="password"
+                name="confirmation"
                 fluid
                 icon='lock'
                 iconPosition='left'
@@ -78,9 +69,9 @@ class SignUp extends Component {
       </div>
     )
   }
-
-
-
 }
 
-export default connect(null, )(SignUp)
+
+
+
+export default SignUp
