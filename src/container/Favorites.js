@@ -24,14 +24,19 @@ class Favorites extends Component {
               })}
             </Card.Header>
           </Card.Group>
-    
+
        </div>
 
 
     <div id="buttons">
+      <Button id="btn-like" basic color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
 
-        <Button id="btn-like" basic color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
-        <Button id="btn-dislike" basic color="green" onClick={()=>this.props.handleNextFavorite()}>like </Button>
+      {this.props.favorites.map(favorite=>{
+        return(
+          <Button key={uuid()} id="btn-dislike" basic color="green" onClick={()=>this.props.handleNextFavorite(favorite.id)}>Like </Button>
+        )
+      })}
+
 
 
       <Popup trigger={<Button>Send To</Button>} flowing hoverable>

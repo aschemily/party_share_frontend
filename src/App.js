@@ -5,6 +5,7 @@ import TopicContainer from './container/TopicContainer'
 import Favorites from './container/Favorites'
 import LandingPage from './container/LandingPage'
 import NavBar from './container/NavBar'
+import MyFavoritesContainer from './container/MyFavoritesContainer'
 import UserProfile from './container/UserProfile'
 import LoginPage from './components/LoginPage'
 import SignUp from './components/SignUp'
@@ -18,7 +19,7 @@ class App extends Component {
 
   componentDidMount(){
     let token = localStorage.getItem("token")
-
+    // localStorage.getItem('token') is returning "null"
     if (token){
       fetch(`http://localhost:3000/api/v1/current_user`,{
         headers:{
@@ -86,11 +87,13 @@ class App extends Component {
         if (response.errors){
           alert(response.errors)
         } else{
+          // console.log(response)
           localStorage.setItem("token", response.token)
+          localStorage.setItem("user_id", response.user.id)
           this.setState({
             currentUser: response.user
           })
-          this.props.history.push(`/users/${response.user.id}`)
+          this.props.history.push(`/profile`)
         }
       })
      }
@@ -101,13 +104,15 @@ class App extends Component {
     this.setState({
       currentUser: null
     })
+    localStorage.clear()
     localStorage.removeItem("user_id")
     this.props.history.push("/")
   }
 
   render() {
-    console.log('current user', this.state.currentUser)
-    console.log('app props', this.props)
+    // console.log('current user', this.state.currentUser)
+    //console.log('in app state is',this.state)
+    // console.log('app props', this.props)
     // console.log('in state topics',this.state.topics)
     // console.log('in state favorites',this.state.favorites)
    //<Route exact path="/topics" component={()=>this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} onSwipe={this.onSwipeMove}/> : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
@@ -116,13 +121,13 @@ class App extends Component {
       <h1>In APP</h1>
       <Router>
       <React.Fragment>
-      <Route exact path="/" component={LandingPage}/>
-      <Switch>
-      <Route exact path="/login" render={()=><LoginPage login={this.login}/>}/>
-      <Route exact path="/signup" render={()=><SignUp signup={this.signup}/>}/>
-      <Route exact path="/users/:id" render={(routerProps)=><UserProfile currentUser={this.state.currentUser} logOut={this.logOut} {...routerProps}/>}/>
-      <Redirect from="/login" to="/users/:id"/>
-      </Switch>
+      
+        <Route exact path="/" component={LandingPage}/>
+        <Route exact path="/login" render={()=><LoginPage login={this.login}/>}/>
+        <Route exact path="/signup" render={()=><SignUp signup={this.signup}/>}/>
+        <Route exact path="/profile" render={(routerProps)=><UserProfile logOut={this.logOut}{...routerProps}/>}/>
+        <Route exact path="/myfavorites" component={MyFavoritesContainer} />
+
        </React.Fragment>
        </Router>
       </div>

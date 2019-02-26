@@ -5,7 +5,7 @@ import uuid from 'uuid'
 class TopicContainer extends Component {
 
   render(){
-    console.log('in TopicContainer props are',this.props)
+    //console.log('in TopicContainer props are',this.props)
     return(
       <div>
       <h1> "In Topic Container" </h1>

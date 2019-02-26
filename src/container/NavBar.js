@@ -8,6 +8,7 @@ const NavBar = (props) =>{
 
     <NavLink to="/"> Home</NavLink>
     <NavLink to="/topics"> Topics</NavLink>
+    <NavLink to="/myfavorites" onClick={()=>props.fetchUserFaves()}> My Favorites </NavLink>
     <Link to="/" onClick={()=>props.logOut()}>Logout</Link>
 
 
