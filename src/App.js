@@ -9,7 +9,7 @@ import MyFavoritesContainer from './container/MyFavoritesContainer'
 import UserProfile from './container/UserProfile'
 import LoginPage from './components/LoginPage'
 import SignUp from './components/SignUp'
-import { BrowserRouter as Router, Route, NavLink,Switch, withRouter, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink,Switch, withRouter, Redirect} from 'react-router-dom';
 
 
 class App extends Component {
@@ -116,21 +116,31 @@ class App extends Component {
     // console.log('in state topics',this.state.topics)
     // console.log('in state favorites',this.state.favorites)
    //<Route exact path="/topics" component={()=>this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} onSwipe={this.onSwipeMove}/> : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
-    return (
-      <div>
-      <h1>In APP</h1>
-      <Router>
-      <React.Fragment>
-      
-        <Route exact path="/" component={LandingPage}/>
-        <Route exact path="/login" render={()=><LoginPage login={this.login}/>}/>
-        <Route exact path="/signup" render={()=><SignUp signup={this.signup}/>}/>
-        <Route exact path="/profile" render={(routerProps)=><UserProfile logOut={this.logOut}{...routerProps}/>}/>
-        <Route exact path="/myfavorites" component={MyFavoritesContainer} />
 
-       </React.Fragment>
-       </Router>
-      </div>
+   // <Route exact path="/" component={LandingPage}/>
+   // <Route exact path="/login" render={()=><LoginPage login={this.login}/>}/>
+   // <Route exact path="/signup" render={()=><SignUp signup={this.signup}/>}/>
+   // <Route exact path="/profile" render={(routerProps)=><UserProfile logOut={this.logOut}{...routerProps}/>}>
+   //  <Route component={MyFavoritesContainer}/>
+   // </Route>
+
+    return (
+
+      <div>
+        <h1>In APP</h1>
+        <NavBar currentuser={this.state.currentUser} logout={this.logOut}/>
+        <Router>
+          <div>
+
+          <Switch>
+            <Route exact path='/' component={LandingPage}/>
+            <Route exact path="/login" render={(routerProps)=><LoginPage login={this.login} {...routerProps}/>}/>
+            <Route exact path="/profile" render={(routerProps)=><UserProfile logOut={this.logOut}{...routerProps}/>}/>
+          </Switch>
+          </div>
+        </Router>
+        </div>
+
     );
   }
 }

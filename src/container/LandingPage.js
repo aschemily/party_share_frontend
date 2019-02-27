@@ -11,8 +11,6 @@ class LandingPage extends Component {
     return(
       <div>
       <h1> coming from LandingPage </h1>
-      <Link to="/login" className="btn btn-link"> Log In </Link>
-      <Link to="/signup" className="btn btn-link"> Sign Up </Link>
 
       </div>
     )

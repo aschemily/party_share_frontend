@@ -45,13 +45,13 @@ class UserProfile extends Component {
         })
       }
     })
-    fetch(`http://localhost:3000/api/v1/render_favorites/${localStorage.getItem("user_id")}`,{
-          headers:{
-            "Authorization":localStorage.getItem("token")
-          }
-        })
-        .then(r => r.json())
-        .then(data => this.setState({myFavorites: data},()=>console.log('my favorites state',this.state.myFavorites)))
+    // fetch(`http://localhost:3000/api/v1/render_favorites/${localStorage.getItem("user_id")}`,{
+    //       headers:{
+    //         "Authorization":localStorage.getItem("token")
+    //       }
+    //     })
+    //     .then(r => r.json())
+    //     .then(data => this.setState({myFavorites: data},()=>console.log('my favorites state',this.state.myFavorites)))
 
   }
 
@@ -92,10 +92,10 @@ class UserProfile extends Component {
                 favorite_id: favoriteId
               })
             })
-         //  .then(r => r.json())
-         //  .then(data => this.setState(prevState=>({
-         //    myFavorites:[...prevState.myFavorites, data]
-         // })))
+          .then(r => r.json())
+          .then(data => this.setState(prevState=>({
+            myFavorites:[...prevState.myFavorites, data]
+         })))
       }
     })
   }
@@ -132,16 +132,11 @@ class UserProfile extends Component {
           <h1> Welcome {this.state.user.username} </h1>
         : null }
 
-      <NavBar
-        logOut={this.props.logOut}
-        user={this.state.user}
-        />
-
       {this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} onSwipe={this.onSwipeMove}/>
        : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>
       }
 
-       <MyFavoritesContainer fetchUserFaves={this.fetchUserFaves}/>
+       <MyFavoritesContainer/>
 
       </div>
     )
