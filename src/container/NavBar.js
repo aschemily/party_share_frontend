@@ -20,6 +20,7 @@ class NavBar extends Component {
 
           <Link className="item" to="/profile">Profile</Link>
           <Link className="item" to="/favorites" onClick={this.props.fetchUserFaves}> My Favorites </Link>
+          <Link className="item" to="/conversations" onClick={this.props.fetchUserConversations}> My Conversations </Link>
           <Link className="item" to="/" onClick={this.props.logout}>Logout</Link>
         </Menu.Menu>
       }

@@ -5,8 +5,10 @@ import Favorites from './container/Favorites'
 import LandingPage from './container/LandingPage'
 import NavBar from './container/NavBar'
 import UserFavoritesContainer from './container/UserFavoritesContainer'
+import UserConversationsContainer from './container/UserConversationsContainer'
 //import UserProfile from './container/UserProfile'
 import LoginPage from './components/LoginPage'
+import ChatRoom from './components/ChatRoom'
 import SignUp from './components/SignUp'
 import { BrowserRouter as Router, Route,Switch, withRouter} from 'react-router-dom';
 
@@ -20,6 +22,8 @@ class App extends Component {
     displayOne: '',
     favorites:[],
     favoriteIndex: 0,
+    conversations:[],
+    conversationClicked:false,
   }
 
   componentDidMount(){
@@ -40,6 +44,7 @@ class App extends Component {
     }
   }
 
+/*************************LOGIN / SIGNUP/ LOGOUT START*************************/
   signup = (username, email, password, confirmation)=>{
 
     if (password === confirmation){
@@ -113,6 +118,29 @@ class App extends Component {
     localStorage.removeItem("user_id")
     this.props.history.push("/")
   }
+/*************************LOGIN / SIGNUP/ LOGOUT END***************************/
+
+/*************************USER FAVES/ TOPICS START*****************************/
+  fetchTopics = ()=>{
+    fetch("http://localhost:3000/api/v1/topics")
+    .then(r => r.json())
+    .then(data => this.setState({topics: data},()=>console.log('topics state',this.state)))
+
+  }
+
+  clickTopic = (topicName) =>{
+    //console.log('in clickTopic event',topicName)
+   return this.state.topics.map(topic =>{
+     //console.log(topicFavorites)
+      //console.log('in clickTopic topic is',topic.favorites)
+      if (topicName === topic.topic_name){
+        this.setState({favorites: topic.favorites, topicClicked:true},()=>console.log('click topic state',this.state))
+      } else {
+        return topicName
+      }
+      //console.log('topicFavorites', topicFavorites)
+    })
+  }
 
   fetchUserFaves = () =>{
     const {currentUser} = this.state
@@ -129,26 +157,7 @@ class App extends Component {
       //[{id: 1, }]
    }
 
-   fetchTopics = ()=>{
-     fetch("http://localhost:3000/api/v1/topics")
-     .then(r => r.json())
-     .then(data => this.setState({topics: data},()=>console.log('topics state',this.state)))
 
-   }
-
-   clickTopic = (topicName) =>{
-     //console.log('in clickTopic event',topicName)
-    return this.state.topics.map(topic =>{
-      //console.log(topicFavorites)
-       //console.log('in clickTopic topic is',topic.favorites)
-       if (topicName === topic.topic_name){
-         this.setState({favorites: topic.favorites, topicClicked:true})
-       } else {
-         return topicName
-       }
-       //console.log('topicFavorites', topicFavorites)
-     })
-   }
 
    handleNextFavorite = (favoriteId) =>{
      //console.log('in handleNextFavorite id',favoriteId)
@@ -178,13 +187,60 @@ class App extends Component {
      )
    }
 
+/*************************USER FAVES/ TOPICS END*******************************/
+
+/*************************USER CONVERSATIONS START*****************************/
+
+   fetchUserConversations = () =>{
+     const {currentUser} = this.state
+     fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/conversations`,{
+         headers:{
+           "Authorization":localStorage.getItem("token")
+         }
+       })
+       .then(r => r.json())
+       .then(conversations => {
+         // this.props.dispatch here
+         this.setState({conversations: conversations})
+       })
+       //[{id: 1, }]
+    }
+
+    clickConversation = (conversationId) =>{
+      console.log('clicking', conversationId)
+      this.setState({conversationClicked:true})
+      // return this.state.conversations.map(conversation=>{
+      //   //console.log('in click conversation', conversation.messages)
+      //   if (conversationId === conversation.id){
+      //
+      //   }
+      // })
+    }
+
+    chatToDisplay = () =>{
+      //console.log('in chat function')
+
+    }
+
+    sendFavorite = () =>{
+
+    }
+
+/*************************USER CONVERSATIONS END*******************************/
+
 
   render() {
-    console.log('state favorites',this.state.favorites)
-
+    //console.log('state favorites',this.state.favorites)
+    console.log('state conversations',this.state.conversations)
     return (
       <div>
-        <NavBar currentuser={this.state.currentUser} logout={this.logOut} fetchUserFaves={this.fetchUserFaves} fetchTopics={this.fetchTopics}/>
+        <NavBar
+          currentuser={this.state.currentUser}
+          logout={this.logOut}
+          fetchUserFaves={this.fetchUserFaves}
+          fetchTopics={this.fetchTopics}
+          fetchUserConversations={this.fetchUserConversations}/>
+
         <Router>
           <div>
           <Switch>
@@ -192,9 +248,13 @@ class App extends Component {
             <Route exact path="/login" render={(routerProps)=><LoginPage login={this.login} {...routerProps}/>}/>
             <Route exact path="/signup" render={(routerProps)=><SignUp signup={this.signup} {...routerProps}/>}/>
             <Route exact path="/favorites" render={(routerProps)=><UserFavoritesContainer favorites={this.state.favorites} {...routerProps}/>}/>
-            <Route exact path="/topics" render={()=> this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite}/>
+            <Route exact path="/topics" render={()=> this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} />
                : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
-          </Switch>
+
+             <Route exact path="/conversations" render={(routerProps)=> this.state.conversationClicked ? <ChatRoom chatroom={this.chatToDisplay()}/>
+                 : <UserConversationsContainer conversations={this.state.conversations} {...routerProps} clickConversation={this.clickConversation}/>}/>
+
+        </Switch>
           </div>
         </Router>
         </div>
