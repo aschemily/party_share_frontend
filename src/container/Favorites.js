@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import Topic from '../components/Topic'
-import { Button, Popup, Header, Grid, Dropdown, Card } from 'semantic-ui-react'
+//import Topic from '../components/Topic'
+import { Button, Popup, Header, Grid, Card } from 'semantic-ui-react'
 import uuid from 'uuid'
 // import Cards, { Card } from 'react-swipe-card'
 

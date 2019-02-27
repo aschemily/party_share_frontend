@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
-import { withRouter } from 'react-router'
-import { connect } from 'react-redux'
+import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
+
+
 
 class LoginPage extends Component {
 
