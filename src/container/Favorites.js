@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 //import Topic from '../components/Topic'
-import { Button, Popup, Header, Grid, Card } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Card} from 'semantic-ui-react'
 import uuid from 'uuid'
 // import Cards, { Card } from 'react-swipe-card'
 
@@ -33,36 +33,30 @@ class Favorites extends Component {
 
       {this.props.favorites.map(favorite=>{
         return(
-          <Button key={uuid()} id="btn-dislike" basic color="green" onClick={()=>this.props.handleNextFavorite(favorite.id)}>Like </Button>
+          <Button key={favorite.id} id="btn-dislike" basic color="green" onClick={()=>this.props.handleNextFavorite(favorite.id)}>Like </Button>
         )
       })}
 
 
 
-      <Popup trigger={<Button>Send To</Button>} flowing hoverable>
+      <Popup on='click' trigger={<Button onClick={()=>this.props.sendFavorite()}>Send To</Button>}>
 
 
-        <Grid.Column textAlign='center'>
-        <Header as='h4'>User 1</Header>
-        <Button> Send </Button>
+        <Grid.Column textAlign='center' style={{ overflow: 'auto', maxHeight: '50vh' }}>
+          {this.props.sendDisplay.map(user=>{
+
+              return (
+                <div>
+              <Header as='h4' key={user.id}>{user.username}</Header>
+              {this.props.favorites.map(favorite=>{
+                return <Button onClick={()=>this.props.createconversation(user.id, user.cid, favorite.id)}> Send </Button>
+              })}
+
+              </div>
+              )
+            })}
+
         </Grid.Column>
-
-        <Grid.Column textAlign='center'>
-        <Header as='h4'>Group 1</Header>
-        <Button> Send </Button>
-        </Grid.Column>
-
-        <Grid.Column textAlign='center'>
-        <Header as='h4'>User 2</Header>
-        <Button> Send </Button>
-        </Grid.Column>
-
-        <Grid.Column textAlign='center'>
-        <Header as='h4'>Group 2</Header>
-        <Button> Send </Button>
-        </Grid.Column>
-
-
 
       </Popup>
 

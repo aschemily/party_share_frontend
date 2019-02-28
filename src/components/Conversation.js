@@ -3,7 +3,7 @@ import { List, Icon} from 'semantic-ui-react'
 
 
 const Conversation = (props) =>{
-  console.log('conversation',props)
+  //console.log('conversation',props)
   return (
 
       <List>

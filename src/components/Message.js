@@ -1,10 +1,11 @@
-import React, {Component}  from 'react'
+import React from 'react'
 import { Icon, Button, List} from 'semantic-ui-react'
 
-class  ChatRoom extends Component {
+const Message = props => {
 
-  //console.log('in ChatRoom props are',props)
-  render(){
+  const favoriteTitle = props.message.favorite ? props.message.favorite.title : null
+
+      //console.log('in Message props are',props.message.favorite.title)
     return(
       <List>
         <List.Item>
@@ -12,17 +13,25 @@ class  ChatRoom extends Component {
           <Icon name='comment icon' />
 
           <List.Content>
-            <List.Header as='a'>User Name</List.Header>
+            <List.Header as='a'>{props.message.username}</List.Header>
             <div className="metadata">
-              <span className="date">Today at 5:42PM</span>
+              <span className="date">Time</span>
             </div>
           </List.Content>
 
           <List.Description>
           <div className="text">
-            Message
+            {props.message.messages}
           </div>
           </List.Description>
+
+          <List.Description>
+          <div className="text">
+            {favoriteTitle}
+          </div>
+          </List.Description>
+
+
          </div>
         </List.Item>
 
@@ -36,7 +45,6 @@ class  ChatRoom extends Component {
          </form>
         </List>
     )
-  }
 }
 
-export default ChatRoom
+export default Message

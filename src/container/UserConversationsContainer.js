@@ -5,7 +5,7 @@ import uuid from 'uuid'
 class UserConversationsContainer extends Component {
 
   render(){
-    console.log('in UserConversationsContainer props are',this.props)
+  //  console.log('in UserConversationsContainer props are',this.props)
     return(
       <div>
       <h1> User Conversations </h1>

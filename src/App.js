@@ -8,7 +8,7 @@ import UserFavoritesContainer from './container/UserFavoritesContainer'
 import UserConversationsContainer from './container/UserConversationsContainer'
 //import UserProfile from './container/UserProfile'
 import LoginPage from './components/LoginPage'
-import ChatRoom from './components/ChatRoom'
+import ChatRoom from './container/ChatRoom'
 import SignUp from './components/SignUp'
 import { BrowserRouter as Router, Route,Switch, withRouter} from 'react-router-dom';
 
@@ -20,10 +20,11 @@ class App extends Component {
     topics: [],
     topicClicked: false,
     displayOne: '',
-    favorites:[],
     favoriteIndex: 0,
     conversations:[],
     conversationClicked:false,
+    sendDisplay:[],
+    messages:[],
   }
 
   componentDidMount(){
@@ -207,31 +208,87 @@ class App extends Component {
     }
 
     clickConversation = (conversationId) =>{
+
       console.log('clicking', conversationId)
       this.setState({conversationClicked:true})
-      // return this.state.conversations.map(conversation=>{
-      //   //console.log('in click conversation', conversation.messages)
-      //   if (conversationId === conversation.id){
-      //
-      //   }
-      // })
+      return this.state.conversations.map(conversation=>{
+        if (conversation.id === conversationId){
+          fetch(`http://localhost:3000/api/v1/conversations/${conversationId}`,{
+            headers:{
+              "Authorization":localStorage.getItem("token")
+            }
+          })
+          .then(r=>r.json())
+          .then(data=>{
+            const messageData = data.map(data => {
+              return {id: data.id, messages: data.messages, username:data.user.username, favorite: data.favorite}
+            })
+            this.setState({messages: messageData})
+          })
+        }
+      })
     }
 
-    chatToDisplay = () =>{
-      //console.log('in chat function')
 
-    }
 
     sendFavorite = () =>{
+      //console.log('should be hitting this')
+      const {currentUser} = this.state
+      Promise.all([
+        fetch("http://localhost:3000/api/v1/users",{
+          headers:{
+            "Authorization":localStorage.getItem("token")
+          }
+        }),
+      fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/conversations`,{
+          headers:{
+            "Authorization":localStorage.getItem("token")
+          }
+        })
+      ])
+      .then(([res1, res2])=>Promise.all([res1.json(), res2.json()]))
+      .then(([data1, data2])=>{
 
+        const conversationName = data2.map(data => {
+          return {cid: data.id, username: data.conversation_name}
+        })
+        this.setState({
+          sendDisplay:[...data1, ...conversationName]
+         },()=>console.log('send display state',this.state))
+      })
     }
+
+    createConversation = (userid, convid,favoriteid)=>{
+      const {currentUser} = this.state
+      console.log('clicking in createConversation', userid, convid, favoriteid)
+      return this.state.sendDisplay.map(receiver =>{
+        //console.log('what is the info',info)
+        if (receiver.id === userid || receiver.id === convid){
+          fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/messages`,{
+            method:"POST",
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              user_id: currentUser.id,
+              messages: 'start your conversation',
+              favorite_id: favoriteid,
+            })
+          })
+        }
+      })
+    }
+
+
 
 /*************************USER CONVERSATIONS END*******************************/
 
 
   render() {
     //console.log('state favorites',this.state.favorites)
-    console.log('state conversations',this.state.conversations)
+  //  console.log('state conversations',this.state.conversations)
+    //console.log('all users state',this.state.allUsers)
     return (
       <div>
         <NavBar
@@ -248,10 +305,10 @@ class App extends Component {
             <Route exact path="/login" render={(routerProps)=><LoginPage login={this.login} {...routerProps}/>}/>
             <Route exact path="/signup" render={(routerProps)=><SignUp signup={this.signup} {...routerProps}/>}/>
             <Route exact path="/favorites" render={(routerProps)=><UserFavoritesContainer favorites={this.state.favorites} {...routerProps}/>}/>
-            <Route exact path="/topics" render={()=> this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} />
+            <Route exact path="/topics" render={()=> this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} sendFavorite={this.sendFavorite} sendDisplay={this.state.sendDisplay} createconversation={this.createConversation}/>
                : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
 
-             <Route exact path="/conversations" render={(routerProps)=> this.state.conversationClicked ? <ChatRoom chatroom={this.chatToDisplay()}/>
+             <Route exact path="/conversations" render={(routerProps)=> this.state.conversationClicked ? <ChatRoom messages={this.state.messages}/>
                  : <UserConversationsContainer conversations={this.state.conversations} {...routerProps} clickConversation={this.clickConversation}/>}/>
 
         </Switch>
