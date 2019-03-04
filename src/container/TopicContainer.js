@@ -8,7 +8,6 @@ class TopicContainer extends Component {
     //console.log('in TopicContainer props are',this.props)
     return(
       <div>
-      <h1> "In Topic Container" </h1>
       {this.props.topics.map(topic=>{
         return <Topic key={uuid()} topic={topic} handleClick={this.props.handleClick}/>
       })}

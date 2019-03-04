@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react"
-import { Link, withRouter } from 'react-router-dom';
+import { Link, BrowserRouter as Router } from 'react-router-dom';
 
 class NavBar extends Component {
 
@@ -8,6 +8,9 @@ class NavBar extends Component {
     return (
 
     <Menu>
+      <Menu.Menu position="left">
+        WeShare
+      </Menu.Menu>
         {!this.props.currentuser ?
           <Menu.Menu position="right">
             <Link className="item" to="/login"> Log In </Link>
@@ -25,8 +28,9 @@ class NavBar extends Component {
         </Menu.Menu>
       }
     </Menu>
+    
     )
   }
 }
 
-export default withRouter(NavBar)
+export default NavBar

@@ -1,23 +1,32 @@
-import React, {Component}  from 'react'
-import { Icon, Button, List} from 'semantic-ui-react'
+import React from 'react'
 import Message from '../components/Message'
 import uuid from 'uuid'
+import MessageForm from '../components/MessageForm'
 
-class  ChatRoom extends Component {
+const ChatRoom = (props) => {
 
+  // const findcid = props.messages.map(message =>{
+  //   return message.cid
+  // })
+  //
+  // 
 
-  render(){
-      console.log('in ChatRoom props are',this.props.messages)
+      console.log('in ChatRoom props are',props)
     return(
         <div>
         <h1> In Chatroom </h1>
-        {this.props.messages.map(message=>{
-          return <Message key={uuid()} message={message}/>
+        {props.messages.map(message=>{
+          return (
+            <Message key={uuid()} message={message}/>
+          )
         })}
+
+         <MessageForm sendnewmessage={props.sendnewmessage}/>
+
         </div>
 
     )
-  }
+
 }
 
 export default ChatRoom

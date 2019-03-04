@@ -8,8 +8,8 @@ class LandingPage extends Component {
   render(){
 
     return(
-      <div>
-      <h1> coming from LandingPage </h1>
+      <div className='homepage'>
+      <img id='background' src={require('./background.jpg')}/>
 
       </div>
     )

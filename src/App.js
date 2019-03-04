@@ -220,8 +220,9 @@ class App extends Component {
           })
           .then(r=>r.json())
           .then(data=>{
+            //console.log('in click conversation data', data)
             const messageData = data.map(data => {
-              return {id: data.id, messages: data.messages, username:data.user.username, favorite: data.favorite}
+              return {id: data.id, messages: data.messages, username:data.user.username, favorite: data.favorite, cid: data.conversation_id}
             })
             this.setState({messages: messageData})
           })
@@ -280,6 +281,30 @@ class App extends Component {
       })
     }
 
+    sendNewMessage = (message)=>{
+      console.log('in send new message', message)
+      const {currentUser} = this.state
+      const findcid = this.state.messages.map(message =>{
+        return message.cid
+       })
+      const cid = findcid.slice(0,1).toString()
+
+      fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/newmessage`,{
+        method:"POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          messages: message,
+          user_id: currentUser.id,
+          conversation_id: parseInt(cid)
+        })
+      })
+    }
+
+
+
 
 
 /*************************USER CONVERSATIONS END*******************************/
@@ -298,8 +323,6 @@ class App extends Component {
           fetchTopics={this.fetchTopics}
           fetchUserConversations={this.fetchUserConversations}/>
 
-        <Router>
-          <div>
           <Switch>
             <Route exact path='/' component={LandingPage}/>
             <Route exact path="/login" render={(routerProps)=><LoginPage login={this.login} {...routerProps}/>}/>
@@ -308,12 +331,11 @@ class App extends Component {
             <Route exact path="/topics" render={()=> this.state.topicClicked ? <Favorites favorites={this.favoriteToDisplay()} handleNextFavorite={this.handleNextFavorite} sendFavorite={this.sendFavorite} sendDisplay={this.state.sendDisplay} createconversation={this.createConversation}/>
                : <TopicContainer topics={this.state.topics} handleClick={this.clickTopic}/>}/>
 
-             <Route exact path="/conversations" render={(routerProps)=> this.state.conversationClicked ? <ChatRoom messages={this.state.messages}/>
+             <Route exact path="/conversations" render={(routerProps)=> this.state.conversationClicked ? <ChatRoom messages={this.state.messages} sendnewmessage={this.sendNewMessage} />
                  : <UserConversationsContainer conversations={this.state.conversations} {...routerProps} clickConversation={this.clickConversation}/>}/>
 
-        </Switch>
-          </div>
-        </Router>
+          </Switch>
+
         </div>
 
     );
