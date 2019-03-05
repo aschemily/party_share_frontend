@@ -71,6 +71,12 @@
   margin: 10px 0;
 }
 
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+  
+}
+
 
 
 @keyframes btn-like {

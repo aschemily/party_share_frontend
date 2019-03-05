@@ -194,37 +194,58 @@ class App extends Component {
 
    fetchUserConversations = () =>{
      const {currentUser} = this.state
-     fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/conversations`,{
+     fetch(`http://localhost:3000/api/v1/users/${currentUser.id}`,{
          headers:{
            "Authorization":localStorage.getItem("token")
          }
        })
        .then(r => r.json())
-       .then(conversations => {
+       .then(user => {
+         //console.log('conversations', user.conversations)
+         //console.log('in fetch user conversations conversations are', conversations)
          // this.props.dispatch here
-         this.setState({conversations: conversations})
+         this.setState({conversations: user.conversations})
        })
        //[{id: 1, }]
     }
 
     clickConversation = (conversationId) =>{
-
+      const {currentUser} = this.state
       console.log('clicking', conversationId)
       this.setState({conversationClicked:true})
       return this.state.conversations.map(conversation=>{
         if (conversation.id === conversationId){
-          fetch(`http://localhost:3000/api/v1/conversations/${conversationId}`,{
+          fetch(`http://localhost:3000/api/v1/users/${currentUser.id}`,{
             headers:{
               "Authorization":localStorage.getItem("token")
             }
           })
           .then(r=>r.json())
           .then(data=>{
-            //console.log('in click conversation data', data)
-            const messageData = data.map(data => {
-              return {id: data.id, messages: data.messages, username:data.user.username, favorite: data.favorite, cid: data.conversation_id}
-            })
-            this.setState({messages: messageData})
+            console.log('in click conversation data', data)
+
+            const receivedMessages = data.received_messages
+            const receivers = data.receivers
+            const sentMessages = data.sent_messages
+            // console.log('in click conversation data', data.messages)
+            //
+            //   const {id: sid, username: senderusername} = data.sender
+            //   const {id: rid, username: receiverusername} = data.receiver
+            //   const {id: id, favorite_id: favorite_id, messages: messages} = data
+            // const senderInfo = data.sender.map(data=>{
+            //   return {sid: data.id, username: data.username}
+            // })
+            //
+            // const receiverInfo = data.receiver.map(data =>{
+            //   return {rid: data.id, username: data.username}
+            // })
+
+             //console.log('data', data.favorite_id.favorite)
+            // const messageData = data.map(data => {
+            //   return {id: data.id, sid: data.sender_id, messages: data.messages, username:data.sender.username, favorite: data.favorite_id}
+            // })
+            //this.setState({messages:[data.id, data.favorite_id, data.messages, sid, senderusername, rid, receiverusername]})
+            this.setState({messages: [...receivedMessages, ...receivers, sentMessages]})
           })
         }
       })
@@ -249,34 +270,58 @@ class App extends Component {
       ])
       .then(([res1, res2])=>Promise.all([res1.json(), res2.json()]))
       .then(([data1, data2])=>{
-
-        const conversationName = data2.map(data => {
-          return {cid: data.id, username: data.conversation_name}
-        })
+        console.log('data 2,', data2)
+        // const receiverId = data1.map(data =>{
+        //   return {id: data.id, username: data.username}
+        // })
+        //console.log('in fetch data1', data1)
+        // const conversationName = data2.map(data => {
+        //
+        //   return {cid: data.id, username: data.conversation_name}
+        // })
         this.setState({
-          sendDisplay:[...data1, ...conversationName]
-         },()=>console.log('send display state',this.state))
+          sendDisplay:[...data1]
+         })
       })
     }
 
     createConversation = (userid, convid,favoriteid)=>{
       const {currentUser} = this.state
-      console.log('clicking in createConversation', userid, convid, favoriteid)
+      //console.log('clicking in createConversation', userid, convid, favoriteid)
       return this.state.sendDisplay.map(receiver =>{
         //console.log('what is the info',info)
         if (receiver.id === userid || receiver.id === convid){
           fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/messages`,{
             method:"POST",
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-              user_id: currentUser.id,
-              messages: 'start your conversation',
-              favorite_id: favoriteid,
-            })
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                conversation_name:'conversation created',
+                sender_id: currentUser.id,
+                favorite_id: favoriteid,
+                receiver_id: userid,
+                messages: 'start your conversation'
+              })
           })
+
+
+
+
+          // fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/messages`,{
+          //   method:"POST",
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     'Accept': 'application/json'
+          //   },
+          //   body: JSON.stringify({
+          //     sender_id: currentUser.id,
+          //     messages: 'start your conversation',
+          //     favorite_id: favoriteid,
+          //     receiver_id: userid
+          //   })
+          // })
         }
       })
     }
@@ -297,15 +342,11 @@ class App extends Component {
         },
         body: JSON.stringify({
           messages: message,
-          user_id: currentUser.id,
+          sender_id: currentUser.id,
           conversation_id: parseInt(cid)
         })
       })
     }
-
-
-
-
 
 /*************************USER CONVERSATIONS END*******************************/
 

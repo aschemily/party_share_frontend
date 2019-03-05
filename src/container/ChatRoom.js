@@ -5,12 +5,6 @@ import MessageForm from '../components/MessageForm'
 
 const ChatRoom = (props) => {
 
-  // const findcid = props.messages.map(message =>{
-  //   return message.cid
-  // })
-  //
-  // 
-
       console.log('in ChatRoom props are',props)
     return(
         <div>

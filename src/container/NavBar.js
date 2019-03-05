@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu } from "semantic-ui-react"
-import { Link, BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
 
@@ -28,7 +28,7 @@ class NavBar extends Component {
         </Menu.Menu>
       }
     </Menu>
-    
+
     )
   }
 }

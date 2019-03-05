@@ -9,7 +9,7 @@ class Favorites extends Component {
 
   render(){
     // console.log('favorite state',this.state)
-   console.log('in Favorites props are',this.props)
+   console.log('in Favorites props are',this.props.sendDisplay)
     return(
       <div className="card">
 
@@ -49,7 +49,7 @@ class Favorites extends Component {
                 <div>
               <Header as='h4' key={user.id}>{user.username}</Header>
               {this.props.favorites.map(favorite=>{
-                return <Button onClick={()=>this.props.createconversation(user.id, user.cid, favorite.id)}> Send </Button>
+                  return <Button onClick={()=>this.props.createconversation(user.id, user.cid, favorite.id)}> Send </Button>
               })}
 
               </div>

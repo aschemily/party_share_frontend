@@ -28,7 +28,6 @@ class LoginPage extends Component {
     //console.log('in LoginPage props are',props)
     return(
       <div className='login-form'>
-        <img id='background' src={require('./components/background.jpg')}/>
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
