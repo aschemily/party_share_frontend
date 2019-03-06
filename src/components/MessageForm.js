@@ -19,9 +19,6 @@ class MessageForm extends Component {
   }
 
 
-
-
-
   render(){
     console.log('in MessageForm props are',this.props)
     return(

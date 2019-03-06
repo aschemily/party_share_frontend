@@ -46,10 +46,10 @@ class Favorites extends Component {
           {this.props.sendDisplay.map(user=>{
 
               return (
-                <div>
+                <div key={uuid()}>
               <Header as='h4' key={user.id}>{user.username}</Header>
               {this.props.favorites.map(favorite=>{
-                  return <Button onClick={()=>this.props.createconversation(user.id, user.cid, favorite.id)}> Send </Button>
+                  return <Button key={uuid()} onClick={()=>this.props.createconversation(user.id, user.cid, favorite.id)}> Send </Button>
               })}
 
               </div>

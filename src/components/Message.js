@@ -1,10 +1,13 @@
 import React from 'react'
-import { Icon, Button, List} from 'semantic-ui-react'
-import MessageForm from './MessageForm'
+import { Icon, List} from 'semantic-ui-react'
+
 
 const Message = props => {
 
   const favoriteTitle = props.message.favorite ? props.message.favorite.title : null
+  const sentMessage = props.message.sent_message ? props.message.sent_message : null
+
+  const receivedMessage = props.message.sent_message ? props.message.sent_message : 'no received messages'
 
   console.log('in message', props)
       //console.log('in Message props are',props.message.favorite.title)
@@ -15,7 +18,7 @@ const Message = props => {
           <div className="container">
              <Icon name='comment icon' />
               <List.Content>
-                <List.Header as='a'>{props.message.sender.username}</List.Header>
+                <List.Header as='a'>{props.message.senderusername}</List.Header>
                   <div className="metadata">
                     <span className="date">Time</span>
                   </div>
@@ -23,13 +26,13 @@ const Message = props => {
 
               <List.Description>
                 <div className="text">
-                  {props.message.messages}
+                  {sentMessage}
                 </div>
               </List.Description>
 
               <List.Description>
                 <div className="text">
-                  {favoriteTitle}
+                  {props.message.favoritetitle}
                 </div>
               </List.Description>
            </div>
@@ -39,7 +42,7 @@ const Message = props => {
            <div className="container darker">
               <Icon name='comment icon' />
                <List.Content>
-                 <List.Header as='a'>{props.message.receiver.username}</List.Header>
+                 <List.Header as='a'>{props.message.receiverusername}</List.Header>
                    <div className="metadata">
                      <span className="date">Time</span>
                    </div>
@@ -47,7 +50,7 @@ const Message = props => {
 
                <List.Description>
                  <div className="text">
-                   {props.message.messages}
+                 {receivedMessage}
                  </div>
                </List.Description>
 
