@@ -17,22 +17,27 @@ class UserConversationsContainer extends Component {
    // console.log('%c convoArray', 'color: orange', convoArray);
 
    //console.log('%c sad sad hack', 'color: blue', this.props.conversations);
-   const uniqueConversations = [...new Set(this.props.conversations.map(convo => JSON.stringify(convo)))].map(convo => JSON.parse(convo));
+  // const uniqueConversations = [...new Set(this.props.conversations.map(convo => JSON.stringify(convo)))].map(convo => JSON.parse(convo));
    //const uniqueConversations = (this.props.conversations) =>[...new Set(this.props.conversations)]
    //const uniqueConversations = [...new Set(this.props.conversations.map(convo => convo.cid))]
    //document.write(JSON.stringify(uniqueConversations))
 
-   console.log('conversation props', this.props.conversations)
-    console.log('uniqueConversations', uniqueConversations);
+   // console.log('conversation props', this.props.conversations)
+   //  console.log('uniqueConversations', uniqueConversations);
 
-   // let uniqIds = {}, source = this.props.conversations
-   //  let filtered = source.filter(obj => !uniqIds[obj.id] && (uniqIds[obj.id] = true));
-   //
-   //  console.log('please work filtered', filtered)
+    // const unique = () =>{
+    //   return this.props.conversations.map(c )
+    // }
+
+   let uniqIds = {}, source = this.props.conversations
+    let filtered = source.filter(obj => !uniqIds[obj.cid] && (uniqIds[obj.cid] = true));
+    //!uniqIds[obj.cid] && (uniqIds[obj.cid] = true)
+   console.log('this.props.conversations', this.props.conversations)
+    console.log('please work filtered', filtered)
     return(
       <div>
       <h1> User Conversations </h1>
-        {uniqueConversations.map(conversation=>{
+        {filtered.map(conversation=>{
           return <Conversation key={uuid()} conversation={conversation} clickConversation={this.props.clickConversation}/>
         })}
 

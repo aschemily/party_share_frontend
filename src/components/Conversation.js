@@ -4,10 +4,10 @@ import { List, Icon} from 'semantic-ui-react'
 
 const Conversation = (props) =>{
   // console.log('conversation',props.conversation.cid)
-   // console.log('props in conversation', props)
-   // console.log('cid', props.conversation.cid)
-   // console.log('rid',props.conversation.rid)
-   // console.log('sid',props.conversation.sid)
+   console.log('props in conversation', props)
+   console.log('cid', props.conversation.cid)
+   console.log('rid',props.conversation.rid)
+   console.log('sid',props.conversation.sid)
   return (
 
       <List>

@@ -10,7 +10,7 @@ const ChatRoom = (props) => {
         <div>
         <h1> In Chatroom </h1>
         {props.messages.map(message=>{
-        //  console.log('in props.message message is',message)
+        console.log('in props.message message is',message)
           return (
             <Message key={uuid()} message={message}/>
           )

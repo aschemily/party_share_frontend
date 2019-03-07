@@ -8,39 +8,35 @@ const Message = props => {
   // const sentMessage = props.message.sent_message ? props.message.sent_message : null
 
   // const receivedMessage = props.message.sent_message ? props.message.sent_message : 'no received messages'
-  const receivedMessage = props ? props.message.userSendingMsg : null
+  const receivedMessage = props.message.receivedmessages ? props.message.userSendingMsg : null
   // const sentMessages = props.message ? props.message.sentmessages : null
   // const sender = props.message ? props.message.senderusername : null
+  console.log('receivedMessage', receivedMessage)
+  const sentMessage = props.message.sentmessages ? props.message.senderusername : null
+  console.log('sentMessage', sentMessage)
+  console.log('props.message.sentmessages ', props.message.sentmessages )
 
-  const sentMessage = props ? props.message.userReceivingMsg : null
 
   const receivedUserFave = props.message ? props.message.receivedUserFave : null
 
   // const sentMessage = props ? props.message.
   const allMessages = (sentMessage && receivedMessage) ? console.log('works') : null
-  console.log('in message component props are ', props.message)
-  console.log('allMessages', allMessages)
 
-    //  <span className="date">Time</span>
+   console.log(props.message.sent)
+   console.log(props.message.received )
+
   return(
     <div>
-      { (receivedMessage || !sentMessage) ?
-
-      <List>
-
-        <List.Item>
+      {props.message.sent ?
           <div className="container">
              <Icon name='comment icon' />
               <List.Content>
                 <List.Header as='a'>{props.message.senderusername}</List.Header>
-                  <div className="metadata">
-                  </div>
               </List.Content>
 
               <List.Description>
                 <div className="text">
                   {props.message.sentmessages}
-
                 </div>
               </List.Description>
 
@@ -50,9 +46,9 @@ const Message = props => {
                 </div>
               </List.Description>
            </div>
-         </List.Item>
+           : null }
 
-         <List.Item>
+           {props.message.received ?
            <div className="container darker">
               <Icon name='comment icon' />
                <List.Content>
@@ -73,11 +69,10 @@ const Message = props => {
                  </div>
                </List.Description>
             </div>
-          </List.Item>
+            : null }
 
 
-       </List>
-     : null}
+
      </div>
 
     )
