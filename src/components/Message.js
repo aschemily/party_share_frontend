@@ -17,15 +17,17 @@ const Message = props => {
   const receivedUserFave = props.message ? props.message.receivedUserFave : null
 
   // const sentMessage = props ? props.message.
-
+  const allMessages = (sentMessage && receivedMessage) ? console.log('works') : null
   console.log('in message component props are ', props.message)
-
+  console.log('allMessages', allMessages)
 
     //  <span className="date">Time</span>
   return(
     <div>
+      { (receivedMessage || !sentMessage) ?
+
       <List>
-        {!sentMessage ?
+
         <List.Item>
           <div className="container">
              <Icon name='comment icon' />
@@ -49,9 +51,7 @@ const Message = props => {
               </List.Description>
            </div>
          </List.Item>
-      : null }
 
-         {receivedMessage ?
          <List.Item>
            <div className="container darker">
               <Icon name='comment icon' />
@@ -74,10 +74,10 @@ const Message = props => {
                </List.Description>
             </div>
           </List.Item>
-         : null  }
+
 
        </List>
-
+     : null}
      </div>
 
     )

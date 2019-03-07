@@ -233,13 +233,13 @@ class App extends Component {
              } else {
                // console.log('have both received and sent messages')
                // console.log('this.state.conversations', this.state.conversations)
-               // const receivedMessages = data.received_messages.map(message =>{
-               //  console.log('received message', message)
-               //   if(message.conversation.id){
-               //     //console.log('in received message what is it', message)
-               //    return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
-               //   }
-               // })
+               const receivedMessages = data.received_messages.map(message =>{
+                console.log('received message', message)
+                 if(message.conversation.id){
+                   //console.log('in received message what is it', message)
+                  return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
+                 }
+               })
 
                const sentMessages = data.sent_messages.map(message =>{
                  if(message.conversation.id){
@@ -247,15 +247,11 @@ class App extends Component {
                    return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
                  }
                })
-               this.setState({conversations:[ ...sentMessages]})
+               this.setState({conversations:[...receivedMessages]})
              }
-
-
 
              // else {
              //  //  console.log('false user has received message')
-
-             //
              //   const sentMessages = data.sent_messages.map(message =>{
              //     if(message.conversation.id){
              //       return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
@@ -326,14 +322,15 @@ class App extends Component {
                    }))
                   this.setState({messages: [...receivedMessages]},()=>console.log('receivedMessages', this.state.messages))
                } else{
-                // console.log('ELSE messages', this.state.messages)
+                 console.log('IN HERE ')
+                console.log('ELSE messages', this.state.messages)
                 const receivedMessages = data.received_messages.filter(receiver =>{
                   // console.log(' IN receivedMessages',receiver )
                   // console.log('receiverid', receiverid)
                   // console.log("receiver.receiver.id ", receiver.receiver.id )
                   // console.log('receiver.sender.id', receiver.sender.id)
                   // console.log('senderid', senderid)
-                  return !(receiverid === receiver.receiver.id && senderid === receiver.sender.id)
+                  return (receiverid === receiver.receiver.id && senderid === receiver.sender.id)
                 }).map(receiver =>({
                  receivedmessages: receiver.messages,
                  receivedUserFave: receiver.favorite ? receiver.favorite.title : null,
@@ -344,8 +341,16 @@ class App extends Component {
                   cid: receiver.conversation.id
                 }))
 
+                console.log('what is received messages', receivedMessages)
+
+
                 const sentMessages = data.sent_messages.filter(sent =>
-                    (receiverid === sent.receiver.id && senderid === sent.sender.id)
+                  // {console.log(' IN sentMessages',sent )
+                  // console.log('receiverid', receiverid)
+                  // console.log("sent.receiver.id ", sent.receiver.id )
+                  // console.log('sent.sender.id', sent.sender.id)
+                  // console.log('senderid', senderid)}
+                    !(receiverid === sent.receiver.id && senderid === sent.sender.id)
                 ).map(sent => ({
                   sentmessages: sent.messages,
                   sentUserFave: sent.favorite ? sent.favorite.title : null,
@@ -354,10 +359,11 @@ class App extends Component {
                   userWhoRecMsgId: sent.receiver.id,
                   cid: sent.conversation.id
                 }))
+                console.log('what is sentMessages', sentMessages)
 
                 console.log('receivedMessages what IS IT', receivedMessages)
 
-                this.setState({messages:[...sentMessages, ...receivedMessages]})
+                this.setState({messages:[...sentMessages, ...receivedMessages]},()=>console.log('new state',this.state.messages))
 
                }
 
@@ -481,9 +487,9 @@ class App extends Component {
     //console.log('state favorites',this.state.favorites)
   //  console.log('state conversations',this.state.conversations)
     //console.log('all users state',this.state.allUsers)
-    console.log('messages state',this.state.messages)
+  //  console.log('messages state',this.state.messages)
     //console.log('new conversations',this.state.newConversations)
-    console.log('conversations', this.state.conversations)
+    //console.log('conversations', this.state.conversations)
     return (
       <div>
         <NavBar
