@@ -4,68 +4,85 @@ import { Icon, List} from 'semantic-ui-react'
 
 const Message = props => {
 
-  const favoriteTitle = props.message.favorite ? props.message.favorite.title : null
-  const sentMessage = props.message.sent_message ? props.message.sent_message : null
+   const favoriteTitle = props.message ? props.message.sentUserFave : null
+  // const sentMessage = props.message.sent_message ? props.message.sent_message : null
 
-  const receivedMessage = props.message.sent_message ? props.message.sent_message : 'no received messages'
+  // const receivedMessage = props.message.sent_message ? props.message.sent_message : 'no received messages'
+  const receivedMessage = props ? props.message.userSendingMsg : null
+  // const sentMessages = props.message ? props.message.sentmessages : null
+  // const sender = props.message ? props.message.senderusername : null
 
-  console.log('in message', props)
-      //console.log('in Message props are',props.message.favorite.title)
+  const sentMessage = props ? props.message.userReceivingMsg : null
+
+  const receivedUserFave = props.message ? props.message.receivedUserFave : null
+
+  // const sentMessage = props ? props.message.
+
+  console.log('in message component props are ', props.message)
+
+
+    //  <span className="date">Time</span>
   return(
     <div>
       <List>
+        {!sentMessage ?
         <List.Item>
           <div className="container">
              <Icon name='comment icon' />
               <List.Content>
                 <List.Header as='a'>{props.message.senderusername}</List.Header>
                   <div className="metadata">
-                    <span className="date">Time</span>
                   </div>
               </List.Content>
 
               <List.Description>
                 <div className="text">
-                  {sentMessage}
+                  {props.message.sentmessages}
+
                 </div>
               </List.Description>
 
               <List.Description>
                 <div className="text">
-                  {props.message.favoritetitle}
+                  {favoriteTitle}
                 </div>
               </List.Description>
            </div>
          </List.Item>
+      : null }
 
+         {receivedMessage ?
          <List.Item>
            <div className="container darker">
               <Icon name='comment icon' />
                <List.Content>
-                 <List.Header as='a'>{props.message.receiverusername}</List.Header>
+                 <List.Header as='a'>{props.message.userSendingMsg}</List.Header>
                    <div className="metadata">
-                     <span className="date">Time</span>
                    </div>
                </List.Content>
 
                <List.Description>
                  <div className="text">
-                 {receivedMessage}
+                 {props.message.receivedmessages}
                  </div>
                </List.Description>
 
                <List.Description>
                  <div className="text">
-                   {favoriteTitle}
+                   {receivedUserFave}
                  </div>
                </List.Description>
             </div>
           </List.Item>
+         : null  }
+
        </List>
 
      </div>
 
     )
 }
+
+
 
 export default Message

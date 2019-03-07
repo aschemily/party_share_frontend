@@ -164,7 +164,7 @@ class App extends Component {
 
 
    handleNextFavorite = (favoriteId) =>{
-     console.log('in handleNextFavorite id',favoriteId)
+     //console.log('in handleNextFavorite id',favoriteId)
      //let userId = this.state.user
      const {currentUser} = this.state
      this.setState({favoriteIndex: this.state.favoriteIndex + 1})
@@ -198,7 +198,7 @@ class App extends Component {
 
    fetchUserConversations = () =>{
      const {currentUser} = this.state
-     console.log('current user', currentUser.conversations)
+     //console.log('current user', currentUser.conversations)
 
        fetch(`http://localhost:3000/api/v1/users/${currentUser.id}`,{
              headers:{
@@ -207,89 +207,161 @@ class App extends Component {
            })
            .then(r => r.json())
            .then(data =>{
-             console.log('data in fetch user conversations', data)
-             console.log('data conversations', data.conversations)
-             console.log('data senders', data.senders)
+              console.log('FETCH USER CONVERSATIONS', data)
 
-             // const currentConversations = data.conversations.map(convo =>{
-             //   //console.log('in currentConversations', convo)
-             //   return {cid: convo.id, conversation_name: convo.conversation_name}
-             // })
+             if(data.received_messages === undefined || data.received_messages.length === 0){
+              console.log('this is true ')
+               const sentMessages = data.sent_messages.map(message =>{
+                 if(message.conversation.id){
+                   //console.log('please get both?',message)
+                   return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
+                 }
+               })
+              // console.log('%c Setting conversations', 'color: red', this.state.conversations, sentMessages);
+                this.setState({conversations:[...sentMessages]})
+             } else if (data.sent_messages === undefined || data.sent_messages.length === 0){
+
+                 const receivedMessages = data.received_messages.map(message =>{
+                  console.log('received message', message)
+                   if(message.conversation.id){
+                     //console.log('in received message what is it', message)
+                    return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
+                   }
+                 })
+                 //console.log('received messages', receivedMessages)
+                 this.setState({conversations:[...receivedMessages]})
+             } else {
+               // console.log('have both received and sent messages')
+               // console.log('this.state.conversations', this.state.conversations)
+               // const receivedMessages = data.received_messages.map(message =>{
+               //  console.log('received message', message)
+               //   if(message.conversation.id){
+               //     //console.log('in received message what is it', message)
+               //    return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
+               //   }
+               // })
+
+               const sentMessages = data.sent_messages.map(message =>{
+                 if(message.conversation.id){
+                   //console.log('please get both?',message)
+                   return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
+                 }
+               })
+               this.setState({conversations:[ ...sentMessages]})
+             }
+
+
+
+             // else {
+             //  //  console.log('false user has received message')
+
              //
-             // const newConversation = data.senders.map(newconvo =>{
-             //   //console.log('in new conversation', newconvo.conversations)
-             //   return newconvo.conversations.map(c =>{
-             //     return {cid: c.id, conversation_name: c.conversation_name}
-             //   })[0]
-             // })
+             //   const sentMessages = data.sent_messages.map(message =>{
+             //     if(message.conversation.id){
+             //       return {cid: message.conversation.id, rid: message.receiver.id, sid: message.sender.id, conversation_name: message.conversation.conversation_name}
+             //     }
+             //   })
+             //
+             //   this.setState(prevState =>({
+             //     conversations:[...prevState.conversations, ...sentMessages, ...receivedMessages]
+             //   }))
+             // }
 
-             const receivedMessages = data.received_messages.map(message =>{
-               console.log('received message', message)
-               console.log(message.conversation.id)
-               return {cid: message.conversation.id, rid: message.receiver_id, sid: message.sender_id, conversation_name: message.conversation.conversation_name}
-             })
-
-             const sentMessages = data.sent_messages.map(message =>{
-               console.log('sent message',message)
-               // console.log('message name',message.conversation.conversation_name)
-               return {cid: message.conversation.id, rid: message.receiver_id, sid: message.sender_id, conversation_name: message.conversation.conversation_name}
-             })
-
-
-             //const newConversation = data.sender[0]
-           //   const info = data.map(user =>{
-           //        return {cid: user.conversation.id, rid: user.receiver_id, sid: user.sender_id, conversation_name: user.conversation.conversation_name}
-           //      })
-           //
-            this.setState({conversations: [...sentMessages, ...receivedMessages]})
-            })
-
+          })
     }
 
 
     clickConversation = (conversationId, receiverid, senderid) =>{
-      // const {currentUser} = this.state
-      console.log('clicking', conversationId, receiverid, senderid, this.state.currentUser)
-      console.log('clickinggggggggggggggggggggggggg', this.state.currentUser)
-      console.log('state conversations', this.state.conversations)
-
+      const {currentUser} = this.state
+      console.log('clicking', 'conversation id', conversationId, 'receiver id', receiverid, 'sender id', senderid)
+      //console.log('clickinggggggggggggggggggggggggg', this.state.currentUser)
+      // console.log('state conversations', this.state.conversations)
+      console.log('in click conversation conversation state',this.state.conversations)
         this.setState({conversationClicked: true})
 
       return this.state.conversations.map(conversation=>{
-        if ((conversation.cid === conversationId && conversation.rid === receiverid && conversation.sid === senderid) ||
-            (conversation.cid === conversationId && conversation.rid === receiverid && conversation.sid === senderid)){
+        if (conversation.cid === conversationId && conversation.rid === receiverid && conversation.sid === senderid){
+          console.log("TRUEEEEEEEEEE")
+          fetch(`http://localhost:3000/api/v1/users/${currentUser.id}`)
+             .then(r => r.json())
+             .then(data =>{
+               console.log('data', data)
+              console.log('data.sent_messages', data.sent_messages)
+              console.log('data.received_messages', data.received_messages)
 
-          // fetch(`http://localhost:3000/api/v1/users/${currentUser.id}`)
-          //   .then(r => r.json())
-          //   .then(data =>{
-          //     //console.log('data in click conversation', data)
-          //   })
 
-          fetch(`http://localhost:3000/api/v1/show_messages_for_only_two/${receiverid}/${senderid}`)
-          .then(r => r.json())
-          .then(data => {
-            console.log('data in fetch show messages for only two', data)
-            const info = data.map(data =>{
-              console.log('data in info', data)
-              // console.log('data receiver', data.receiver)
-              // console.log('data receiver', data.receiver.username)
-              // console.log('data receiver', data.receiver.id)
-              // console.log('data sender',data.sender)
-               console.log('data conversation', data.favorite)
-              return {
-                sid: data.sender.id,
-                senderusername: data.sender.username,
-                sent_messages: data.sent_messages,
-                rid: data.receiver.id,
-                receiverusername: data.receiver.username,
-                received_messages: data.received_messages,
-                fid: data.favorite ? data.favorite.id : 0,
-                favoritetitle: data.favorite ? data.favorite.title : 0,
-                messages:data.messages,
-                cid: data.conversation.id}
-            })
-            this.setState({messages: [...info]})
-          })
+               if (data.received_messages === undefined || data.received_messages.length === 0){
+                //console.log('this is true')
+                 const sentMessages = data.sent_messages.filter(sent =>
+                  // { console.log('sent receive', sent.receiver.id)
+                  //   console.log('receiverid', receiverid)
+                  //   console.log('sent.sender.id', sent.sender.id)
+                  //   console.log('senderid', senderid )}
+                     (receiverid === sent.receiver.id && senderid === sent.sender.id)
+                 ).map(sent => ({
+                   sentmessages: sent.messages,
+                   sentUserFave: sent.favorite ? sent.favorite.title : null,
+                   userWhoSentMsgId: sent.sender.id,
+                   senderusername: sent.sender.username,
+                   userWhoRecMsgId: sent.receiver.id,
+                   cid: sent.conversation.id
+                 }))
+                 console.log('sent messages what is it?', sentMessages)
+
+                 this.setState({messages:[...sentMessages]},()=>console.log('sentMessages', this.state.messages))
+
+               } else if(data.sent_messages === undefined || data.sent_messages.length === 0){
+                 console.log('true user has not sent any messages')
+                 console.log('this.state.messages', this.state.messages)
+                   const receivedMessages = data.received_messages.filter(receiver =>{
+                     return (receiverid === receiver.receiver.id && senderid === receiver.sender.id)
+                   }).map(receiver =>({
+                     receivedmessages: receiver.messages,
+                     receivedUserFave: receiver.favorite ? receiver.favorite.title : null,
+                      userSendingMsgId: receiver.sender.id,
+                      userSendingMsg: receiver.sender.username,
+                      userReceivingMsg: receiver.receiver.username,
+                      userRecMsgId: receiver.receiver.id,
+                      cid: receiver.conversation.id
+                   }))
+                  this.setState({messages: [...receivedMessages]},()=>console.log('receivedMessages', this.state.messages))
+               } else{
+                // console.log('ELSE messages', this.state.messages)
+                const receivedMessages = data.received_messages.filter(receiver =>{
+                  // console.log(' IN receivedMessages',receiver )
+                  // console.log('receiverid', receiverid)
+                  // console.log("receiver.receiver.id ", receiver.receiver.id )
+                  // console.log('receiver.sender.id', receiver.sender.id)
+                  // console.log('senderid', senderid)
+                  return !(receiverid === receiver.receiver.id && senderid === receiver.sender.id)
+                }).map(receiver =>({
+                 receivedmessages: receiver.messages,
+                 receivedUserFave: receiver.favorite ? receiver.favorite.title : null,
+                  userSendingMsgId: receiver.sender.id,
+                  userSendingMsg: receiver.sender.username,
+                  userReceivingMsg: receiver.receiver.username,
+                  userRecMsgId: receiver.receiver.id,
+                  cid: receiver.conversation.id
+                }))
+
+                const sentMessages = data.sent_messages.filter(sent =>
+                    (receiverid === sent.receiver.id && senderid === sent.sender.id)
+                ).map(sent => ({
+                  sentmessages: sent.messages,
+                  sentUserFave: sent.favorite ? sent.favorite.title : null,
+                  userWhoSentMsgId: sent.sender.id,
+                  senderusername: sent.sender.username,
+                  userWhoRecMsgId: sent.receiver.id,
+                  cid: sent.conversation.id
+                }))
+
+                console.log('receivedMessages what IS IT', receivedMessages)
+
+                this.setState({messages:[...sentMessages, ...receivedMessages]})
+
+               }
+
+           })
         }
       })
     }
@@ -333,7 +405,7 @@ class App extends Component {
 
     createConversation = (userid, convid,favoriteid)=>{
       const {currentUser} = this.state
-      //console.log('clicking in createConversation', userid, convid, favoriteid)
+      console.log('clicking in createConversation', userid, convid, favoriteid)
       this.setState({newConvo: true})
       return this.state.sendDisplay.map(receiver =>{
         //console.log('what is the info',info)
@@ -349,57 +421,45 @@ class App extends Component {
                 sender_id: currentUser.id,
                 favorite_id: favoriteid,
                 receiver_id: userid,
-                sent_messages: 'favoriteid',
-                received_messages:'work?',
-                messages: 'please work'
-
               })
           })
-
-
-
-
-          // fetch(`http://localhost:3000/api/v1/users/${currentUser.id}/messages`,{
-          //   method:"POST",
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //     'Accept': 'application/json'
-          //   },
-          //   body: JSON.stringify({
-          //     sender_id: currentUser.id,
-          //     messages: 'start your conversation',
-          //     favorite_id: favoriteid,
-          //     receiver_id: userid
-          //   })
-          // })
         }
       })
     }
 
     sendNewMessage = (message)=>{
       console.log('in send new message', message)
+
+      console.log('in send new message state is?', this.state.messages)
+
+
       const {currentUser} = this.state
-      // const findcid = this.state.messages.map(message =>{
-      //   return message.cid
-      //  })
-      // const cid = findcid.slice(0,1).toString()
 
-      console.log('state messages',this.state.messages)
+      console.log('currentUser', this.state.currentUser)
 
-      const rid = this.state.messages.map(rid =>{
-        return rid.rid
+
+      const userToReceiveMsgid = this.state.messages.map(user =>{
+         //console.log('in send new message receiver', user.sentmessages)
+         //console.log('user who sent the message should be 39', user.userWhoRecMsgId)
+         if(currentUser.id === user.userRecMsgId){
+           return  user.userSendingMsgId
+         } else if (currentUser.id === user.userWhoSentMsgId){
+           return user.userWhoRecMsgId
+         }
+        // console.log('receiver.receiver ',receiver.receiver)
+        // console.log('receiver.receiver.id',receiver.receiver.id)
+        //return user.sid
       })[0]
-      //console.log('rid?', rid)
 
-      const sid = this.state.messages.map(sid =>{
-        return sid.sid
-      })[0]
+      console.log('userToReceiveMsgid', userToReceiveMsgid)
 
       const cid = this.state.messages.map(cid =>{
         return cid.cid
       })[0]
 
-      fetch(`http://localhost:3000/api/v1/new_messages_for_only_two/${rid}/${sid}`,{
+      console.log('cid?', cid)
+
+      fetch(`http://localhost:3000/api/v1/newmessages`,{
         method:"POST",
         headers: {
           'Content-Type': 'application/json',
@@ -407,9 +467,9 @@ class App extends Component {
         },
         body: JSON.stringify({
           messages: message,
-          sender_id: sid,
+          sender_id: currentUser.id,
           conversation_id: cid,
-          receiver_id: rid
+          receiver_id: userToReceiveMsgid,
         })
       })
     }
@@ -421,8 +481,8 @@ class App extends Component {
     //console.log('state favorites',this.state.favorites)
   //  console.log('state conversations',this.state.conversations)
     //console.log('all users state',this.state.allUsers)
-    //console.log('messages state',this.state.messages)
-    console.log('new conversations',this.state.newConversations)
+    console.log('messages state',this.state.messages)
+    //console.log('new conversations',this.state.newConversations)
     console.log('conversations', this.state.conversations)
     return (
       <div>
