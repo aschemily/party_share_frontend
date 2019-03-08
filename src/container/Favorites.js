@@ -11,29 +11,30 @@ class Favorites extends Component {
     // console.log('favorite state',this.state)
    console.log('in Favorites props are',this.props.sendDisplay)
     return(
-      <div className="card">
 
+      <div className="card">
+        <img id='background' src={require('./favoritephoto.jpg')}/>
       <div id="favorite-card">
 
-          <Card.Group centered >
-            <Card.Header>
+        <Card color='blue' centered fluid>
+          <Card.Content centered >
+            <Card.Header centered>
               {this.props.favorites.map(favorite=>{
-
-                return <h1 key={uuid()}> {favorite.title}</h1>
-
+                return <h1 id="favoritename" key={uuid()}> {favorite.title}</h1>
               })}
             </Card.Header>
-          </Card.Group>
-
+          </Card.Content>
+          </Card>
        </div>
 
 
+
     <div id="buttons">
-      <Button id="btn-like" basic color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
+      <Button class="ui red button" id="btn-like" color="red" onClick={()=>this.props.handleNextFavorite()}>Dislike </Button>
 
       {this.props.favorites.map(favorite=>{
         return(
-          <Button key={favorite.id} id="btn-dislike" basic color="green" onClick={()=>this.props.handleNextFavorite(favorite.id)}>Like </Button>
+          <Button  class="positive ui button" key={favorite.id} id="btn-dislike" color="green" onClick={()=>this.props.handleNextFavorite(favorite.id)}>Like </Button>
         )
       })}
 
@@ -57,12 +58,9 @@ class Favorites extends Component {
             })}
 
         </Grid.Column>
-
       </Popup>
-
      </div>
     </div>
-
     )
   }
 

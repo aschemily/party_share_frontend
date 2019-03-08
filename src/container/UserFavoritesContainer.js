@@ -8,7 +8,6 @@ class UserFavoritesContainer extends Component {
     //console.log('in UserFavoritesContainer props are',this.props)
     return(
       <div>
-      <h1> User Favorites </h1>
         {this.props.favorites.map(favorite=>{
           return <Favorite key={uuid()} favorite={favorite}/>
         })}

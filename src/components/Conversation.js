@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Icon} from 'semantic-ui-react'
+import { List, Card, Icon} from 'semantic-ui-react'
 
 
 const Conversation = (props) =>{
@@ -9,19 +9,12 @@ const Conversation = (props) =>{
    console.log('rid',props.conversation.rid)
    console.log('sid',props.conversation.sid)
   return (
-
-      <List>
-        <List.Item position="center">
-          <Icon name='linechat'/>
-          <List.Content>
-            <List.Header as='a' onClick={()=>props.clickConversation(props.conversation.cid, props.conversation.rid, props.conversation.sid)}>{props.conversation.conversation_name}</List.Header>
-        </List.Content>
-        </List.Item>
-
-      </List>
-
-
-
+    <Card color='green'>
+      <Card.Content>
+      <Icon id='topicicon' name='linechat' size='large'/>
+      <Card.Header as='a' onClick={()=>props.clickConversation(props.conversation.cid, props.conversation.rid, props.conversation.sid)}>{props.conversation.conversation_name}</Card.Header>
+      </Card.Content>
+      </Card>
 
   )
 

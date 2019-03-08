@@ -27,7 +27,7 @@ const Message = props => {
 
   return(
     <div>
-      {props.message.sent ?
+      {(props.message.sent || !props.message.received) ?
           <div className="container">
              <Icon name='comment icon' />
               <List.Content>
@@ -48,7 +48,7 @@ const Message = props => {
            </div>
            : null }
 
-           {props.message.received ?
+           {(props.message.received || !props.message.sent) ?
            <div className="container darker">
               <Icon name='comment icon' />
                <List.Content>
@@ -69,10 +69,7 @@ const Message = props => {
                  </div>
                </List.Description>
             </div>
-            : null }
-
-
-
+          : null }
      </div>
 
     )

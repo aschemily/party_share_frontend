@@ -74,7 +74,7 @@ class App extends Component {
           this.setState({
             currentUser: response.user
           })
-          this.props.history.push(`/profile`)
+          this.props.history.push(`/topics`)
         }
       })
     } else{
@@ -107,7 +107,7 @@ class App extends Component {
           this.setState({
             currentUser: response.user
           })
-          this.props.history.push(`/profile`)
+          this.props.history.push(`/topics`)
         }
       })
      }
@@ -318,7 +318,12 @@ class App extends Component {
                  console.log('true user has not sent any messages')
                  console.log('this.state.messages', this.state.messages)
                    const receivedMessages = data.received_messages.filter(receiver =>{
-                     return (receiverid === receiver.sender.id && senderid === receiver.receiver.id ) (receiverid === receiver.sender.id && senderid === receiver.receiver.id ) || (receiverid === receiver.receiver.id && senderid === receiver.sender.id)
+                     console.log(' IN receivedMessages',receiver )
+                     console.log('receiverid', receiverid)
+                     console.log("receiver.receiver.id ", receiver.receiver.id )
+                     console.log('receiver.sender.id', receiver.sender.id)
+                     console.log('senderid', senderid)
+                     return (receiverid === receiver.sender.id && senderid === receiver.receiver.id ) || (receiverid === receiver.receiver.id && senderid === receiver.sender.id)
                    }).map(receiver =>({
                      id: receiver.id,
                      receivedmessages: receiver.messages,

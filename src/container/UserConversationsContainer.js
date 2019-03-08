@@ -36,7 +36,6 @@ class UserConversationsContainer extends Component {
     console.log('please work filtered', filtered)
     return(
       <div>
-      <h1> User Conversations </h1>
         {filtered.map(conversation=>{
           return <Conversation key={uuid()} conversation={conversation} clickConversation={this.props.clickConversation}/>
         })}
