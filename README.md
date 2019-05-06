@@ -10,10 +10,10 @@ WeShare was created with a Ruby on Rails backend with a PostgressSQL database an
 - React Router 
 - JWT Authentication
 
-Github to backend can be found [here](https://www.youtube.com/watch?v=rQs4ckUSlLk) 
+Github to backend can be found [here](https://github.com/aschemily/we_share_backend)
 
 ### Key Features
-The full demo can be found [here](https://github.com/aschemily/we_share_backend)
+The full demo can be found on YouTube [here](https://www.youtube.com/watch?v=rQs4ckUSlLk) 
 
 Users can click on the different categoies displayed and like/dislike them. The 'liked' information will be displayed in their favorites section. Users can also send information they like to other users. The information that is currently being displayed is seeded data.
 
