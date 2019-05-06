@@ -1,68 +1,30 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## WeShare
 
-## Available Scripts
+WeShare is a single page web application inspired by Instagram direct messaging. This React app allows users to like/dislike and favorite information they see along with sending it to they're friends. Users have the capabilitiy to have direct conversations to eachother. 
 
-In the project directory, you can run:
+### Technologies 
 
-### `npm start`
+WeShare was created with a Ruby on Rails backend with a PostgressSQL database and a React frontend. Additional frameworks and libraries used include: 
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Semantic UI 
+- React Router 
+- JWT Authentication
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Github to backend can be found [here](https://www.youtube.com/watch?v=rQs4ckUSlLk) 
 
-### `npm test`
+### Key Features
+The full demo can be found [here](https://github.com/aschemily/we_share_backend)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Users can click on the different categoies displayed and like/dislike them. The 'liked' information will be displayed in their favorites section. Users can also send information they like to other users. The information that is currently being displayed is seeded data.
 
-### `npm run build`
+The chat feature implemented is based on a self referencing relationship configured in Ruby on Rails where the user can be the sender or receiver. In the apps current state there is a refresh that needs to happen to see the message being sent and delivered. 
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The Sign In/ Login page is JWT authenticated. 
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Future Development
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The major focus of the application was to implement a working chat feature with action cables. As mentioned in Key Features a refresh needs to occur. With more time additional features would include: 
+- Action Cables 
+- Edit/Delete capabilities for users to delete their favorites and conversations and/or edit the conversation name 
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
